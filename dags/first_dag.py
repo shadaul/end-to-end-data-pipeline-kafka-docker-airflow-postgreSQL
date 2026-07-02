@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta 
 from airflow.operators.python import PythonOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 
 def my_first_func():
     print("excelent")
@@ -30,5 +31,18 @@ with DAG(
         task_id = 'python_task',
         python_callable = my_first_func
     )
+    task4 = PostgresOperator(
+        task_id = 'create_table_in_db',
+        postgres_conn_id = 'postgres_default',
+        sql = """
+            CREATE TABLE IF NOT EXISTS my_first_table (
+                id SERIAL PRIMARY KEY,
+                run_date DATE NOT NULL,
+                status VARCHAR(50)
+            );
+    """
+    )
 
-    task1 >> task2 >> task3
+
+    task1 >> task2 >> task3 >> task4
+
