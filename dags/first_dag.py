@@ -42,7 +42,14 @@ with DAG(
             );
     """
     )
+    task5 = PostgresOperator(
+        task_id = 'insert_data',
+        postgres_conn_id = 'postgres_default',
+        sql = """
+            INSERT INTO my_first_table (run_date, status)
+            VALUES ('{{ ds }}', 'Success');
+    """
+    )
 
-
-    task1 >> task2 >> task3 >> task4
+    task1 >> task2 >> task3 >> task4 >> task5
 
