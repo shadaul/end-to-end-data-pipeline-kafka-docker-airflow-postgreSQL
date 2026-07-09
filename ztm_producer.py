@@ -14,4 +14,12 @@ producer = Kafkaproducer(
 
 value_serializer=lambda v: json.dumps(v).encode('utf-8')
 
-url = https://api.um.warszawa.pl/api/action/busestrams_get/
+url = "https://api.um.warszawa.pl/api/action/busestrams_get/"
+
+params = {
+    "resource_id"
+    "apikey"
+    "type"
+}
+
+response 
