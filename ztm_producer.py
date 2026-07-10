@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import json
-from kafka import Kafkaproducer
+from kafka import KafkaProducer
 
 load_dotenv()
 
@@ -27,3 +27,12 @@ print("working with API")
 response = requests.get(url, params=params)
 data = response.json()
 
+if 'result' in data and isinstance(data['result'], list):
+    buses = data['result']
+    
+    for bus in buses:
+        producer.send('ztm_transport', value=bus)
+else:
+    print("error")
+
+producer.flush()
