@@ -1,1 +1,1 @@
-SELECT * FROM my_first_table;
+SELECT * FROM bus_data;
