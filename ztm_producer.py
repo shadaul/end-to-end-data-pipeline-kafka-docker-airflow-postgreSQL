@@ -8,7 +8,7 @@ load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
 
-producer = Kafkaproducer(
+producer = KafkaProducer(
     bootstrap_servers = 'localhost:9092',
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
@@ -32,6 +32,7 @@ if 'result' in data and isinstance(data['result'], list):
     
     for bus in buses:
         producer.send('ztm_transport', value=bus)
+        print(bus)
 else:
     print("error")
 
