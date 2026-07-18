@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS bus_data (
+CREATE TABLE IF NOT EXISTS buses (
     vehicle_number TEXT,
     line TEXT,
     latitude DECIMAL(10, 8),

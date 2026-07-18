@@ -1,9 +1,12 @@
 import json
 import psycopg2
 from kafka import KafkaConsumer
+from dotenv import load_dotenv
+import os
 
 
-
+load_dotenv()
+conn = psycopg2.connect(dbname = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), host = os.getenv('DB_HOST'), password = os.getenv('DB_PASSWORD'))
 cursor = conn.cursor()
 consumer = KafkaConsumer(
     'ztm_transport',
@@ -23,7 +26,7 @@ for message in consumer:
     print(data)
 
     insert_query = """
-        INSERT INTO bus_data (vehicle_number, line, latitude, longitude, bus_time)
+        INSERT INTO buses (vehicle_number, line, latitude, longitude, bus_time)
         VALUES (%s, %s, %s, %s, %s)
     """
 

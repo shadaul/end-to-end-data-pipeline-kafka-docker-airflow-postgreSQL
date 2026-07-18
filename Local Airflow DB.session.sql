@@ -1,1 +1,1 @@
-SELECT * FROM bus_data;
+SELECT * FROM buses;
