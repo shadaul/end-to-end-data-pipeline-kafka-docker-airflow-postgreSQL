@@ -3,6 +3,7 @@ import psycopg2
 from kafka import KafkaConsumer
 from dotenv import load_dotenv
 import os
+from psycopg2.extras import execute_values
 
 
 load_dotenv()
@@ -13,6 +14,8 @@ consumer = KafkaConsumer(
     bootstrap_servers='localhost:9092',
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
+
+batch = []
 
 for message in consumer:
     print("receiving data")
@@ -27,9 +30,11 @@ for message in consumer:
 
     insert_query = """
         INSERT INTO buses (vehicle_number, line, latitude, longitude, bus_time)
-        VALUES (%s, %s, %s, %s, %s)
+        VALUES %s
     """
 
-    cursor.execute(insert_query, (VehicleNumber, lines, Lat, lon, Time))
-
-    conn.commit()
+    batch.append((VehicleNumber, lines, Lat, lon, Time))
+    if len(batch) >= 50:
+        execute_values(cursor, insert_query, batch)
+        conn.commit()
+        batch.clear()
