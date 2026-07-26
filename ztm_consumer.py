@@ -28,9 +28,15 @@ for message in consumer:
     Brigade = data.get('Brigade')
     print(data)
 
-    insert_query = """
-        INSERT INTO buses (vehicle_number, line, latitude, longitude, bus_time)
-        VALUES %s
+    INSERT_QUERY = """
+    INSERT INTO buses (id, vehicle_number, line, latitude, longitude, bus_time, updated_at)
+    VALUES %s
+    ON CONFLICT (vehicle_number) DO UPDATE SET 
+        line = EXCLUDED.line,
+        latitude = EXCLUDED.latitude,
+        longitude = EXCLUDED.longitude,
+        bus_time = EXCLUDED.bus_time,
+        updated_at = EXCLUDED.updated_at;
     """
 
     batch.append((VehicleNumber, lines, Lat, lon, Time))

@@ -1,8 +1,12 @@
-CREATE TABLE IF NOT EXISTS buses (
-    vehicle_number TEXT,
-    line TEXT,
-    latitude DECIMAL(10, 8),
-    longitude DECIMAL(11, 8),
-    bus_time TIMESTAMP,
-    ingested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+DROP TABLE IF EXISTS buses;
+
+
+CREATE TABLE buses (
+    id UUID PRIMARY KEY,
+    vehicle_number VARCHAR(50) UNIQUE NOT NULL, 
+    line VARCHAR(20),
+    latitude FLOAT,
+    longitude FLOAT,
+    bus_time VARCHAR(50), 
+    updated_at TIMESTAMP WITH TIME ZONE
 );
